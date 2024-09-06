@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace PokedexMVC.Data 
+namespace PokedexMVC.Data // Use your actual namespace
 {
     public class ApplicationDbContext : IdentityDbContext
     {
