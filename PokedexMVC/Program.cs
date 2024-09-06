@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PokedexMVC.Data;  // Make sure you're using the correct namespace
+using PokedexMVC.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Register Identity services
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()  // This enables role management
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
@@ -32,13 +32,61 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Ensure authentication and authorization middleware are called
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Ensure roles are created and an admin user is seeded
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    await SeedRolesAndAdminUserAsync(roleManager, userManager);
+}
+
+// Route configuration: Set Home as the default route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages();
+app.MapRazorPages();  // Necessary for Identity pages
 
 app.Run();
+
+// Method to seed roles and admin user
+async Task SeedRolesAndAdminUserAsync(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+{
+    // Define the roles you want to create
+    string[] roleNames = { "Admin", "Manager" };
+
+    foreach (var roleName in roleNames)
+    {
+        // Check if the role exists, if not, create it
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+
+    // Create an admin user if not already created
+    string adminEmail = "admin@backoffice.com";
+    string adminPassword = "AdminPassword123!";
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        var newAdmin = new IdentityUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(newAdmin, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(newAdmin, "Admin");
+        }
+    }
+}
