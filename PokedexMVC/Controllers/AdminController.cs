@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "Admin")]
-public class AdminController : Controller
+namespace PokedexMVC.Controllers
 {
-    public IActionResult Index()
+    [Authorize(Roles = "Admin")]
+    public class AdminController : Controller
     {
-        return View();
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 
 }
