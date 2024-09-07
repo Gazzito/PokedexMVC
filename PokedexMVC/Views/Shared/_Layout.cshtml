@@ -25,14 +25,29 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <!-- Conditionally show Admin Dashboard link if the user is in the Admin role -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin Dashboard</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
+<<<<<<< Updated upstream
     }
 
     <div class="container mt-5">
         <main role="main" class="py-4">
+=======
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+>>>>>>> Stashed changes
             @RenderBody()
         </main>
     </div>
@@ -43,7 +58,14 @@
         </div>
     </footer>
 
+<<<<<<< Updated upstream
     @RenderSection("Scripts", required: false)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+=======
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+>>>>>>> Stashed changes
 </body>
 </html>
