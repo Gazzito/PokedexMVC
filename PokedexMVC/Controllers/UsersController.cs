@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PokedexMVC.Controllers
 {
@@ -15,43 +16,125 @@ namespace PokedexMVC.Controllers
             _userManager = userManager;
         }
 
-        // Manage Users Action
+        // GET: /Users/Index
         public IActionResult Index()
         {
             var users = _userManager.Users.ToList();
             return View(users);
         }
 
-        // Edit User Action
-        public IActionResult Edit(string id)
+        // GET: /Users/Create
+        public IActionResult Create()
         {
-            var user = _userManager.FindByIdAsync(id).Result;
+            return View();
+        }
+
+        // POST: /Users/Create
+        [HttpPost]
+        public async Task<IActionResult> Create(IdentityUser model, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, password); // Password comes from the form
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        // GET: /Users/Edit/{id}
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(user); // Pass the IdentityUser to the view
         }
 
-        // Delete User Action
-        public IActionResult Delete(string id)
+        // POST: /Users/Edit/{id}
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, IdentityUser model)
         {
-            var user = _userManager.FindByIdAsync(id).Result;
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        // GET: /Users/Details/{id}
+        public async Task<IActionResult> Details(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(user); // Pass IdentityUser to the view for details
         }
 
-        // Post method for deleting the user
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(string id)
+        // GET: /Users/Delete/{id}
+        public async Task<IActionResult> Delete(string id)
         {
-            var user = _userManager.FindByIdAsync(id).Result;
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user); // Pass the IdentityUser to the delete view
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                _userManager.DeleteAsync(user).Wait();
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
             return RedirectToAction(nameof(Index));
         }
