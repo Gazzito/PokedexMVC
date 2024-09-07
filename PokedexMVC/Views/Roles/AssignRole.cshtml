@@ -1,0 +1,31 @@
+﻿@model PokedexMVC.Models.AssignRoleViewModel
+
+<h2>Assign Roles to User</h2>
+
+<div>
+    <p><strong>User:</strong> @Model.UserEmail</p>
+
+    <form asp-action="AssignRole" method="post">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <div class="form-group">
+            <label for="roleName">Select Role:</label>
+            <select name="roleName" class="form-control">
+                @foreach (var role in Model.AvailableRoles)
+                {
+                    <option value="@role">@role</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Assign Role</button>
+    </form>
+</div>
+
+<h3>Assigned Roles</h3>
+<ul>
+    @foreach (var role in Model.AssignedRoles)
+    {
+        <li>@role</li>
+    }
+</ul>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Users List</a>
