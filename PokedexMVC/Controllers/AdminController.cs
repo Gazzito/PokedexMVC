@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PokedexMVC.Controllers
@@ -11,4 +11,5 @@ namespace PokedexMVC.Controllers
             return View();
         }
     }
+
 }
