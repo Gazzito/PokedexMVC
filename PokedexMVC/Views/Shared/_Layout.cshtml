@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/PokedexMVC.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @* Check if the current path starts with /Identity/Account/Login. If not, show the navbar sdsd*@
     @* Check if the current path starts with /Identity/Account/Login. If not, show the navbara *@
     @if (!Context.Request.Path.StartsWithSegments("/Identity/Account/Login"))
     {
