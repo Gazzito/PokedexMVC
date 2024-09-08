@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PokedexMVC.Models;
 
 namespace PokedexMVC.Data // Use your actual namespace
 {
@@ -9,5 +10,6 @@ namespace PokedexMVC.Data // Use your actual namespace
             : base(options)
         {
         }
+        public DbSet<PokedexMVC.Models.Pokemon> Pokemon { get; set; } = default!;
     }
 }
