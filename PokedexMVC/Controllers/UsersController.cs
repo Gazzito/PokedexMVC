@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace PokedexMVC.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -18,6 +17,7 @@ namespace PokedexMVC.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: /Users/Index
         public IActionResult Index()
         {
@@ -25,12 +25,14 @@ namespace PokedexMVC.Controllers
             return View(users);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: /Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: /Users/Create
         [HttpPost]
         public async Task<IActionResult> Create(IdentityUser model, string password)
@@ -55,6 +57,7 @@ namespace PokedexMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: /Users/Edit/{id}
         public async Task<IActionResult> Edit(string id)
         {
@@ -66,6 +69,7 @@ namespace PokedexMVC.Controllers
             return View(user); // Pass the IdentityUser to the view
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: /Users/Edit/{id}
         [HttpPost]
         public async Task<IActionResult> Edit(string id, IdentityUser model)
@@ -97,6 +101,7 @@ namespace PokedexMVC.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: /Users/Details/{id}
         public async Task<IActionResult> Details(string id)
         {
@@ -108,6 +113,7 @@ namespace PokedexMVC.Controllers
             return View(user); // Pass IdentityUser to the view for details
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: /Users/Delete/{id}
         public async Task<IActionResult> Delete(string id)
         {
@@ -127,6 +133,7 @@ namespace PokedexMVC.Controllers
             return View(user); // Pass the IdentityUser to the delete view
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -158,7 +165,7 @@ namespace PokedexMVC.Controllers
 
 
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

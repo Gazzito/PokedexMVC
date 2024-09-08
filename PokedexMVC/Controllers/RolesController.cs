@@ -206,5 +206,41 @@ namespace PokedexMVC.Controllers
 
             return RedirectToAction(nameof(AssignRole), new { userId = userId });
         }
+
+
+        // POST: /Roles/RemoveRole
+        [HttpPost]
+        public async Task<IActionResult> RemoveRole(string userId, string roleName)
+        {
+            if (roleName == "Admin")
+            {
+                ModelState.AddModelError(string.Empty, "The Admin role cannot be removed.");
+                return RedirectToAction(nameof(AssignRole), new { userId = userId });
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (await _userManager.IsInRoleAsync(user, roleName))
+            {
+                var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(AssignRole), new { userId = userId });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(AssignRole), new { userId = userId });
+        }
     }
 }
