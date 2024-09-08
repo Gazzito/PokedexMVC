@@ -51,23 +51,6 @@ namespace PokedexMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Region",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Region", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -204,6 +187,34 @@ namespace PokedexMVC.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pack_AspNetUsers_UpdatedByUserId",
+                        column: x => x.UpdatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Region",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Region", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Region_AspNetUsers_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Region_AspNetUsers_UpdatedByUserId",
                         column: x => x.UpdatedByUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -351,6 +362,16 @@ namespace PokedexMVC.Migrations
                 name: "IX_PokemonInPack_PokemonId",
                 table: "PokemonInPack",
                 column: "PokemonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Region_CreatedByUserId",
+                table: "Region",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Region_UpdatedByUserId",
+                table: "Region",
+                column: "UpdatedByUserId");
         }
 
         /// <inheritdoc />
@@ -384,10 +405,10 @@ namespace PokedexMVC.Migrations
                 name: "Pokemon");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Region");
 
             migrationBuilder.DropTable(
-                name: "Region");
+                name: "AspNetUsers");
         }
     }
 }

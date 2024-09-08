@@ -12,8 +12,6 @@
             <th>Name</th>
             <th>Created By</th>
             <th>Created On</th>
-            <th>Updated By</th>
-            <th>Updated On</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,6 +20,8 @@
         {
             <tr>
                 <td>@region.Name</td>
+                <td>@region.CreatedByUserId</td> <!-- This will now display the username instead of the GUID -->
+                <td>@region.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@region.Id" class="btn btn-info">Details</a>
                     <a asp-action="Edit" asp-route-id="@region.Id" class="btn btn-warning">Edit</a>

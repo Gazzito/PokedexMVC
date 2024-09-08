@@ -12,7 +12,7 @@ using PokedexMVC.Data;
 namespace PokedexMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240908022446_ModelsPokemons")]
+    [Migration("20240908030144_ModelsPokemons")]
     partial class ModelsPokemons
     {
         /// <inheritdoc />
@@ -380,7 +380,7 @@ namespace PokedexMVC.Migrations
 
                     b.Property<string>("CreatedByUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -391,12 +391,16 @@ namespace PokedexMVC.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UpdatedByUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("Region");
                 });
@@ -512,6 +516,23 @@ namespace PokedexMVC.Migrations
                     b.Navigation("Pack");
 
                     b.Navigation("Pokemon");
+                });
+
+            modelBuilder.Entity("PokedexMVC.Models.Region", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("PokedexMVC.Models.Pack", b =>
