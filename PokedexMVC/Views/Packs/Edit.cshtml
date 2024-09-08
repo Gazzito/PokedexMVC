@@ -128,13 +128,15 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
-        // Add Pokémon to the list when the button is clicked
+        // Add Pokémon to the list when the "Add Pokémon" button is clicked
         $('#addPokemonBtn').click(function () {
+            // Get the selected Pokémon's ID and name from the dropdown
             var selectedPokemonId = $('#availablePokemons').val();
             var selectedPokemonName = $('#availablePokemons option:selected').text();
 
+            // Ensure a valid Pokémon is selected
             if (selectedPokemonId) {
-                // Append selected Pokémon to the list
+                // Append the selected Pokémon to the list of chosen Pokémon
                 $('#selectedPokemonList').append(
                     '<li class="list-group-item" data-pokemon-id="' + selectedPokemonId + '">' +
                     '<span class="pokemon-name">' + selectedPokemonName + '</span>' +
@@ -142,66 +144,74 @@
                     '</li>'
                 );
 
-                // Remove Pokémon from dropdown
+                // Remove the Pokémon from the dropdown to prevent re-selection
                 $('#availablePokemons option:selected').remove();
 
-                // Update the hidden input with the selected Pokémon IDs
+                // Update the hidden input field with the selected Pokémon IDs
                 updateSelectedPokemonIds();
             }
         });
 
-        // Remove Pokémon from the list
+        // Event delegation to remove Pokémon when the "Remove" button is clicked
         $(document).on('click', '.remove-pokemon-btn', function () {
+            // Get the Pokémon's ID and name from the list item being removed
             var pokemonId = $(this).closest('li').attr('data-pokemon-id');
             var pokemonName = $(this).siblings('.pokemon-name').text().trim();
 
-            // Add the removed Pokémon back to the dropdown
+            // Re-add the removed Pokémon back into the dropdown for re-selection
             $('#availablePokemons').append('<option value="' + pokemonId + '">' + pokemonName + '</option>');
 
-            // Remove the Pokémon from the list
+            // Remove the Pokémon from the selected Pokémon list
             $(this).closest('li').remove();
 
-            // Update the hidden input with the selected Pokémon IDs
+            // Update the hidden input field with the new list of selected Pokémon IDs
             updateSelectedPokemonIds();
         });
 
-        // Update the hidden input with the selected Pokémon IDs
+        // Function to update the hidden input field with the selected Pokémon IDs
         function updateSelectedPokemonIds() {
             var selectedPokemonIds = [];
+            // Iterate through the list of selected Pokémon to gather their IDs
             $('#selectedPokemonList li').each(function () {
                 selectedPokemonIds.push($(this).attr('data-pokemon-id'));
             });
+            // Join the IDs with commas and set them as the value of the hidden input field
             $('#selectedPokemonIds').val(selectedPokemonIds.join(','));
         }
 
-        // Preview Image Upload
+        // Preview the image when a user uploads a file via the file input
         $(document).ready(function () {
+            // When a file is selected in the file input
             $('#fileUpload').change(function () {
                 var input = this;
                 if (input.files && input.files[0]) {
+                    // Create a FileReader to read the image data
                     var reader = new FileReader();
                     reader.onload = function (e) {
+                        // Display the uploaded image in the preview image element
                         $('#previewImage').attr('src', e.target.result);
                         $('#previewImage').show();
                     }
-                    reader.readAsDataURL(input.files[0]);
+                    reader.readAsDataURL(input.files[0]); // Read the file as a data URL for preview
                 }
             });
         });
 
-
-        // Validation: ensure total chances are 100
+        // Validate that the total of all chance fields (Bronze, Silver, Gold, Platinum, Diamond) equals 100 before form submission
         $('#packForm').submit(function (event) {
+            // Retrieve the chance values for each rarity tier and convert them to floating-point numbers
             var bronze = parseFloat($('#BronzeChance').val()) || 0;
             var silver = parseFloat($('#SilverChance').val()) || 0;
             var gold = parseFloat($('#GoldChance').val()) || 0;
             var platinum = parseFloat($('#PlatinumChance').val()) || 0;
             var diamond = parseFloat($('#DiamondChance').val()) || 0;
 
+            // Calculate the total sum of all rarity chances
             var total = bronze + silver + gold + platinum + diamond;
 
+            // If the total does not equal 100, prevent form submission and display an alert
             if (total !== 100) {
-                event.preventDefault();
+                event.preventDefault();  // Stop the form from submitting
                 alert("The total of all chance fields must equal 100. The current total is " + total);
             }
         });

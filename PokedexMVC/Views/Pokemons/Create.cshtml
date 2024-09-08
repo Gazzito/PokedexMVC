@@ -68,13 +68,22 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+        // Add an event listener to the image input field to handle file selection
         document.getElementById('imageUpload').addEventListener('change', function (event) {
+            // Create a FileReader to read the selected image file
             var reader = new FileReader();
+
+            // When the file is successfully read, set the image preview
             reader.onload = function (e) {
+                // Set the 'src' attribute of the preview image to the file's data URL
                 document.getElementById('imagePreview').src = e.target.result;
+                // Display the image preview element
                 document.getElementById('imagePreview').style.display = 'block';
             };
+
+            // Read the selected file as a data URL to show it as an image preview
             reader.readAsDataURL(event.target.files[0]);
         });
     </script>
 }
+

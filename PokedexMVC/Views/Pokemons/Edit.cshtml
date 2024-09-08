@@ -67,13 +67,22 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+        // Add an event listener to the file input element (with id 'imageUpload')
         document.getElementById('imageUpload').addEventListener('change', function (event) {
+            // Create a FileReader object to read the selected image file
             var reader = new FileReader();
+
+            // Define the onload function that will be called once the file is read
             reader.onload = function (e) {
+                // Set the 'src' attribute of the image element (with id 'imagePreview') to the file's data URL
                 document.getElementById('imagePreview').src = e.target.result;
+                // Display the image preview by changing the 'display' property to 'block'
                 document.getElementById('imagePreview').style.display = 'block';
             };
+
+            // Start reading the image file as a data URL, which will trigger the onload function once reading is done
             reader.readAsDataURL(event.target.files[0]);
         });
     </script>
 }
+

@@ -122,11 +122,12 @@
     <script type="text/javascript">
         // Add Pokémon to the list when the button is clicked
         $('#addPokemonBtn').click(function () {
+            // Get the selected Pokémon ID and name from the dropdown
             var selectedPokemonId = $('#availablePokemons').val();
             var selectedPokemonName = $('#availablePokemons option:selected').text();
 
             if (selectedPokemonId) {
-                // Append selected Pokémon to the list
+                // Append the selected Pokémon to the list (as a new list item with a remove button)
                 $('#selectedPokemonList').append(
                     '<li class="list-group-item" data-pokemon-id="' + selectedPokemonId + '">' +
                     '<span class="pokemon-name">' + selectedPokemonName + '</span>' +
@@ -134,67 +135,76 @@
                     '</li>'
                 );
 
-                // Remove Pokémon from dropdown
+                // Remove the Pokémon from the dropdown after it's been added to the list
                 $('#availablePokemons option:selected').remove();
 
-                // Update the hidden input with the selected Pokémon IDs
+                // Update the hidden input field with the selected Pokémon IDs
                 updateSelectedPokemonIds();
             }
         });
 
-        // Remove Pokémon from the list
+        // Remove Pokémon from the list when the "Remove" button is clicked
         $(document).on('click', '.remove-pokemon-btn', function () {
+            // Get the Pokémon ID and name from the clicked list item
             var pokemonId = $(this).closest('li').attr('data-pokemon-id');
             var pokemonName = $(this).siblings('.pokemon-name').text().trim();
 
-            // Add the removed Pokémon back to the dropdown
+            // Add the removed Pokémon back to the dropdown for selection again
             $('#availablePokemons').append('<option value="' + pokemonId + '">' + pokemonName + '</option>');
 
-            // Remove the Pokémon from the list
+            // Remove the Pokémon from the selected list
             $(this).closest('li').remove();
 
-            // Update the hidden input with the selected Pokémon IDs
+            // Update the hidden input field with the updated list of selected Pokémon IDs
             updateSelectedPokemonIds();
         });
 
-        // Update the hidden input with the selected Pokémon IDs
+        // Function to update the hidden input field with the selected Pokémon IDs
         function updateSelectedPokemonIds() {
             var selectedPokemonIds = [];
+            // Iterate through the list of selected Pokémon and collect their IDs
             $('#selectedPokemonList li').each(function () {
                 selectedPokemonIds.push($(this).attr('data-pokemon-id'));
             });
+            // Update the hidden input with a comma-separated string of selected Pokémon IDs
             $('#selectedPokemonIds').val(selectedPokemonIds.join(','));
         }
 
-        // Preview Image Upload
+        // Preview the uploaded image file when the user selects an image
         $(document).ready(function () {
             $('#fileUpload').change(function () {
                 var input = this;
                 if (input.files && input.files[0]) {
+                    // Create a FileReader to read the image data
                     var reader = new FileReader();
                     reader.onload = function (e) {
+                        // Set the image source to the loaded file and display it
                         $('#previewImage').attr('src', e.target.result);
                         $('#previewImage').show();
                     }
-                    reader.readAsDataURL(input.files[0]);
+                    reader.readAsDataURL(input.files[0]);  // Convert image file to data URL for preview
                 }
             });
         });
 
-                // Validation: ensure total chances are 100
-                $('#packForm').submit(function(event) {
-                    var bronze = parseFloat($('#BronzeChance').val()) || 0;
-                    var silver = parseFloat($('#SilverChance').val()) || 0;
-                    var gold = parseFloat($('#GoldChance').val()) || 0;
-                    var platinum = parseFloat($('#PlatinumChance').val()) || 0;
-                    var diamond = parseFloat($('#DiamondChance').val()) || 0;
+        // Validate that the total of all chance fields (Bronze, Silver, Gold, Platinum, Diamond) equals 100
+        $('#packForm').submit(function(event) {
+            // Retrieve the chance values from the input fields and convert them to floats
+            var bronze = parseFloat($('#BronzeChance').val()) || 0;
+            var silver = parseFloat($('#SilverChance').val()) || 0;
+            var gold = parseFloat($('#GoldChance').val()) || 0;
+            var platinum = parseFloat($('#PlatinumChance').val()) || 0;
+            var diamond = parseFloat($('#DiamondChance').val()) || 0;
 
-                    var total = bronze + silver + gold + platinum + diamond;
+            // Calculate the total chance
+            var total = bronze + silver + gold + platinum + diamond;
 
-                    if (total !== 100) {
-                        event.preventDefault();
-                        alert("The total of all chance fields must equal 100. The current total is " + total);
-                    }
-                });
+            // If the total chance is not 100, prevent form submission and show an alert
+            if (total !== 100) {
+                event.preventDefault();  // Prevent form submission
+                alert("The total of all chance fields must equal 100. The current total is " + total);
+            }
+        });
     </script>
 }
+
