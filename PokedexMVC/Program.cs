@@ -61,7 +61,7 @@ app.Run();
 async Task SeedRolesAndAdminUserAsync(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
 {
     // Define the roles you want to create
-    string[] roleNames = { "Admin", "Manager" };
+    string[] roleNames = { "Admin" };
 
     foreach (var roleName in roleNames)
     {
