@@ -262,27 +262,26 @@ namespace PokedexMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PokemonInPack",
+                name: "PokemonInPacks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     PackId = table.Column<int>(type: "int", nullable: false),
                     PokemonId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PokemonInPack", x => x.Id);
+                    table.PrimaryKey("PK_PokemonInPacks", x => new { x.PackId, x.PokemonId });
                     table.ForeignKey(
-                        name: "FK_PokemonInPack_Pack_PackId",
+                        name: "FK_PokemonInPacks_Pack_PackId",
                         column: x => x.PackId,
                         principalTable: "Pack",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PokemonInPack_Pokemon_PokemonId",
+                        name: "FK_PokemonInPacks_Pokemon_PokemonId",
                         column: x => x.PokemonId,
                         principalTable: "Pokemon",
                         principalColumn: "Id",
@@ -354,13 +353,8 @@ namespace PokedexMVC.Migrations
                 column: "UpdatedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PokemonInPack_PackId",
-                table: "PokemonInPack",
-                column: "PackId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PokemonInPack_PokemonId",
-                table: "PokemonInPack",
+                name: "IX_PokemonInPacks_PokemonId",
+                table: "PokemonInPacks",
                 column: "PokemonId");
 
             migrationBuilder.CreateIndex(
@@ -393,7 +387,7 @@ namespace PokedexMVC.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "PokemonInPack");
+                name: "PokemonInPacks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

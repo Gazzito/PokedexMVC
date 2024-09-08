@@ -1,94 +1,209 @@
 ﻿@model PokedexMVC.Models.Pack
 
-@{
-    ViewData["Title"] = "Edit";
-}
+<h2>Edit Pack</h2>
 
-<h1>Edit</h1>
+<form asp-action="Edit" enctype="multipart/form-data" method="post" id="packForm">
+    <div class="form-horizontal">
+        <hr />
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <!-- Name -->
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-<h4>Pack</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <!-- Price -->
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <!-- Bronze Chance -->
+                <div class="form-group">
+                    <label asp-for="BronzeChance" class="control-label"></label>
+                    <input asp-for="BronzeChance" class="form-control" />
+                    <span asp-validation-for="BronzeChance" class="text-danger"></span>
+                </div>
+
+                <!-- Silver Chance -->
+                <div class="form-group">
+                    <label asp-for="SilverChance" class="control-label"></label>
+                    <input asp-for="SilverChance" class="form-control" />
+                    <span asp-validation-for="SilverChance" class="text-danger"></span>
+                </div>
+
+                <!-- Gold Chance -->
+                <div class="form-group">
+                    <label asp-for="GoldChance" class="control-label"></label>
+                    <input asp-for="GoldChance" class="form-control" />
+                    <span asp-validation-for="GoldChance" class="text-danger"></span>
+                </div>
+
+                <!-- Platinum Chance -->
+                <div class="form-group">
+                    <label asp-for="PlatinumChance" class="control-label"></label>
+                    <input asp-for="PlatinumChance" class="form-control" />
+                    <span asp-validation-for="PlatinumChance" class="text-danger"></span>
+                </div>
+
+                <!-- Diamond Chance -->
+                <div class="form-group">
+                    <label asp-for="DiamondChance" class="control-label"></label>
+                    <input asp-for="DiamondChance" class="form-control" />
+                    <span asp-validation-for="DiamondChance" class="text-danger"></span>
+                </div>
+
+                <!-- Upload New Image -->
+                <div class="form-group">
+                    <label>Upload New Image</label><br />
+                    <input asp-for="Image" type="file" id="fileUpload" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <!-- Preview Image -->
+                <div class="form-group mt-4 mw-50">
+                    @if (Model.Image != null && Model.Image.Length > 0)
+                    {
+                        <img id="previewImage" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Preview" class="img-thumbnail" style="max-width: 200px;" />
+                    }
+                    else
+                    {
+                        <p>No image available</p>
+                    }
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+
+            <!-- Right Column (Pokémon Selection) -->
+            <div class="col-md-6">
+                <!-- Dropdown for adding new Pokémon -->
+                <div class="form-group">
+                    <label>Add Pokémon</label>
+                    <select id="availablePokemons" class="form-control">
+                        <option value="">Select Pokémon to add</option>
+                        @foreach (var pokemon in ViewBag.AvailablePokemons)
+                        {
+                            <option value="@pokemon.Value">@pokemon.Text</option>
+                        }
+                    </select>
+                    <button type="button" id="addPokemonBtn" class="btn btn-primary mt-2">Add Pokémon</button>
+                </div>
+
+                <!-- List of Added Pokémon -->
+                <div class="form-group">
+                    <label>Selected Pokémon</label>
+                    <ul id="selectedPokemonList" class="list-group">
+                        @if (ViewBag.SelectedPokemons != null && ((IEnumerable<dynamic>)ViewBag.SelectedPokemons).Any())
+                        {
+                            foreach (var pokemon in ViewBag.SelectedPokemons)
+                            {
+                                <li class="list-group-item" data-pokemon-id="@pokemon.PokemonId">
+                                    <span class="pokemon-name">@pokemon.Name</span>
+                                    <button type="button" class="btn btn-danger btn-sm float-right remove-pokemon-btn">Remove</button>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <!-- Hidden input to store selected Pokémon IDs -->
+                @if (ViewBag.SelectedPokemons != null)
+                {
+                    <input type="hidden" id="selectedPokemonIds" name="selectedPokemonIds"
+                           value="@string.Join(",", ((IEnumerable<dynamic>)ViewBag.SelectedPokemons).Select(p => p.PokemonId))" />
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BronzeChance" class="control-label"></label>
-                <input asp-for="BronzeChance" class="form-control" />
-                <span asp-validation-for="BronzeChance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SilverChance" class="control-label"></label>
-                <input asp-for="SilverChance" class="form-control" />
-                <span asp-validation-for="SilverChance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GoldChance" class="control-label"></label>
-                <input asp-for="GoldChance" class="form-control" />
-                <span asp-validation-for="GoldChance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlatinumChance" class="control-label"></label>
-                <input asp-for="PlatinumChance" class="form-control" />
-                <span asp-validation-for="PlatinumChance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiamondChance" class="control-label"></label>
-                <input asp-for="DiamondChance" class="form-control" />
-                <span asp-validation-for="DiamondChance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalBought" class="control-label"></label>
-                <input asp-for="TotalBought" class="form-control" />
-                <span asp-validation-for="TotalBought" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" class="form-control" />
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedByUserId" class="control-label"></label>
-                <select asp-for="CreatedByUserId" class="form-control" asp-items="ViewBag.CreatedByUserId"></select>
-                <span asp-validation-for="CreatedByUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedOn" class="control-label"></label>
-                <input asp-for="UpdatedOn" class="form-control" />
-                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedByUserId" class="control-label"></label>
-                <select asp-for="UpdatedByUserId" class="form-control" asp-items="ViewBag.UpdatedByUserId"></select>
-                <span asp-validation-for="UpdatedByUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
+        <!-- Save Button -->
+        <div class="form-group mt-4">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        // Add Pokémon to the list when the button is clicked
+        $('#addPokemonBtn').click(function () {
+            var selectedPokemonId = $('#availablePokemons').val();
+            var selectedPokemonName = $('#availablePokemons option:selected').text();
+
+            if (selectedPokemonId) {
+                // Append selected Pokémon to the list
+                $('#selectedPokemonList').append(
+                    '<li class="list-group-item" data-pokemon-id="' + selectedPokemonId + '">' +
+                    '<span class="pokemon-name">' + selectedPokemonName + '</span>' +
+                    '<button type="button" class="btn btn-danger btn-sm float-right remove-pokemon-btn">Remove</button>' +
+                    '</li>'
+                );
+
+                // Remove Pokémon from dropdown
+                $('#availablePokemons option:selected').remove();
+
+                // Update the hidden input with the selected Pokémon IDs
+                updateSelectedPokemonIds();
+            }
+        });
+
+        // Remove Pokémon from the list
+        $(document).on('click', '.remove-pokemon-btn', function () {
+            var pokemonId = $(this).closest('li').attr('data-pokemon-id');
+            var pokemonName = $(this).siblings('.pokemon-name').text().trim();
+
+            // Add the removed Pokémon back to the dropdown
+            $('#availablePokemons').append('<option value="' + pokemonId + '">' + pokemonName + '</option>');
+
+            // Remove the Pokémon from the list
+            $(this).closest('li').remove();
+
+            // Update the hidden input with the selected Pokémon IDs
+            updateSelectedPokemonIds();
+        });
+
+        // Update the hidden input with the selected Pokémon IDs
+        function updateSelectedPokemonIds() {
+            var selectedPokemonIds = [];
+            $('#selectedPokemonList li').each(function () {
+                selectedPokemonIds.push($(this).attr('data-pokemon-id'));
+            });
+            $('#selectedPokemonIds').val(selectedPokemonIds.join(','));
+        }
+
+        // Preview Image Upload
+        $(document).ready(function () {
+            $('#fileUpload').change(function () {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previewImage').attr('src', e.target.result);
+                        $('#previewImage').show();
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+        });
+
+
+        // Validation: ensure total chances are 100
+        $('#packForm').submit(function (event) {
+            var bronze = parseFloat($('#BronzeChance').val()) || 0;
+            var silver = parseFloat($('#SilverChance').val()) || 0;
+            var gold = parseFloat($('#GoldChance').val()) || 0;
+            var platinum = parseFloat($('#PlatinumChance').val()) || 0;
+            var diamond = parseFloat($('#DiamondChance').val()) || 0;
+
+            var total = bronze + silver + gold + platinum + diamond;
+
+            if (total !== 100) {
+                event.preventDefault();
+                alert("The total of all chance fields must equal 100. The current total is " + total);
+            }
+        });
+    </script>
 }

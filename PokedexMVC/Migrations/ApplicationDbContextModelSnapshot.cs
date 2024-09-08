@@ -340,31 +340,26 @@ namespace PokedexMVC.Migrations
 
             modelBuilder.Entity("PokedexMVC.Models.PokemonInPack", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("PackId")
                         .HasColumnType("int");
 
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackId");
+                    b.HasKey("PackId", "PokemonId");
 
                     b.HasIndex("PokemonId");
 
-                    b.ToTable("PokemonInPack");
+                    b.ToTable("PokemonInPacks");
                 });
 
             modelBuilder.Entity("PokedexMVC.Models.Region", b =>
