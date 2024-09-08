@@ -1,23 +1,23 @@
 ﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
-<h2>Edit User</h2>
+<h2>Editar Utilizador</h2>
 
 <form asp-action="Edit" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
+        <label asp-for="Email" class="form-label">Email</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="UserName" class="form-label"></label>
+        <label asp-for="UserName" class="form-label">Nome de Utilizador</label>
         <input asp-for="UserName" class="form-control" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-primary">Guardar Alterações</button>
 </form>
 
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>

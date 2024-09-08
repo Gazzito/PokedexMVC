@@ -1,65 +1,65 @@
 ﻿@model PokedexMVC.Models.Pokemon
 
-<h2>Edit Pokemon</h2>
+<h2>Editar Pokémon</h2>
 
 <form asp-action="Edit" enctype="multipart/form-data" method="post">
     <div class="form-horizontal">
         <hr />
         <!-- Name -->
         <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
+            <label asp-for="Name" class="control-label">Nome</label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <!-- Region -->
         <div class="form-group">
-            <label asp-for="RegionId" class="control-label"></label>
+            <label asp-for="RegionId" class="control-label">Região</label>
             <select asp-for="RegionId" class="form-control" asp-items="ViewBag.RegionId"></select>
             <span asp-validation-for="RegionId" class="text-danger"></span>
         </div>
 
         <!-- Base Stats -->
         <div class="form-group">
-            <label asp-for="BaseAttackPoints" class="control-label"></label>
+            <label asp-for="BaseAttackPoints" class="control-label">Pontos de Ataque Base</label>
             <input asp-for="BaseAttackPoints" class="form-control" />
             <span asp-validation-for="BaseAttackPoints" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="BaseDefensePoints" class="control-label"></label>
+            <label asp-for="BaseDefensePoints" class="control-label">Pontos de Defesa Base</label>
             <input asp-for="BaseDefensePoints" class="form-control" />
             <span asp-validation-for="BaseDefensePoints" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="BaseHealthPoints" class="control-label"></label>
+            <label asp-for="BaseHealthPoints" class="control-label">Pontos de Vida Base</label>
             <input asp-for="BaseHealthPoints" class="form-control" />
             <span asp-validation-for="BaseHealthPoints" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="BaseSpeedPoints" class="control-label"></label>
+            <label asp-for="BaseSpeedPoints" class="control-label">Pontos de Velocidade Base</label>
             <input asp-for="BaseSpeedPoints" class="form-control" />
             <span asp-validation-for="BaseSpeedPoints" class="text-danger"></span>
         </div>
 
         <!-- Image Preview -->
         <div class="form-group">
-            <label>Image Preview</label><br />
-            <img id="imagePreview" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Preview" class="img-thumbnail" style="max-width:200px;" />
+            <label>Pré-visualização da Imagem</label><br />
+            <img id="imagePreview" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Pré-visualização" class="img-thumbnail" style="max-width:200px;" />
         </div>
 
         <!-- Upload New Image -->
         <div class="form-group">
-            <label>Upload New Image</label><br />
+            <label>Carregar Nova Imagem</label><br />
             <input asp-for="Image" type="file" id="imageUpload" class="form-control" />
             <span asp-validation-for="Image" class="text-danger"></span>
         </div>
 
         <!-- Save Button -->
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="Guardar" class="btn btn-primary" />
         </div>
     </div>
 </form>
@@ -85,4 +85,3 @@
         });
     </script>
 }
-

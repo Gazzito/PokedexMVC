@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 
-<h2>Users in Role: @ViewBag.RoleName</h2>
+<h2>Utilizadores na Função: @ViewBag.RoleName</h2>
 
 @if (Model.Count() == 0)
 {
-    <p>No users are assigned to this role.</p>
+    <p>Não há utilizadores atribuídos a esta função.</p>
 }
 else
 {
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>User Email</th>
-                <th>User Name</th>
+                <th>Email do Utilizador</th>
+                <th>Nome do Utilizador</th>
             </tr>
         </thead>
         <tbody>
@@ -27,4 +27,4 @@ else
     </table>
 }
 
-<a asp-action="Index" class="btn btn-secondary">Back to Roles List</a>
+<a asp-action="Index" class="btn btn-secondary">Voltar à Lista de Funções</a>

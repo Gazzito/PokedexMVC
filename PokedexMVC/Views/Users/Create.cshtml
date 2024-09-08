@@ -1,22 +1,22 @@
 ﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
-<h2>Create User</h2>
+<h2>Criar Utilizador</h2>
 
 <form asp-action="Create" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
+        <label asp-for="Email" class="form-label">Email</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Password</label>
+        <label>Palavra-passe</label>
         <input type="password" name="password" class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Create User</button>
+    <button type="submit" class="btn btn-primary">Criar Utilizador</button>
 </form>
 
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,13 +22,13 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Início</a>
                             </li>
 
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin Dashboard</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Painel de Administração</a>
                                 </li>
                             }
                         </ul>
@@ -40,13 +40,13 @@
                                     <form id="logoutForm" method="post" action="@Url.Action("Logout", "Users")" style="display:none;">
                                         @Html.AntiForgeryToken()
                                     </form>
-                                    <a class="nav-link text-dark" href="javascript:document.getElementById('logoutForm').submit();">Sign Out</a>
+                                    <a class="nav-link text-dark" href="javascript:document.getElementById('logoutForm').submit();">Terminar Sessão</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Iniciar Sessão</a>
                                 </li>
                             }
                         </ul>
@@ -64,7 +64,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - PokedexMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - PokedexMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
 

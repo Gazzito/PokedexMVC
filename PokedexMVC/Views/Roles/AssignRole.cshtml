@@ -1,14 +1,14 @@
 ﻿@model PokedexMVC.Models.AssignRoleViewModel
 
-<h2>Assign Roles to User</h2>
+<h2>Atribuir Funções ao Utilizador</h2>
 
 <div>
-    <p><strong>User:</strong> @Model.UserEmail</p>
+    <p><strong>Utilizador:</strong> @Model.UserEmail</p>
 
     <form asp-action="AssignRole" method="post">
         <input type="hidden" name="userId" value="@Model.UserId" />
         <div class="form-group">
-            <label for="roleName">Select Role:</label>
+            <label for="roleName">Selecionar Função:</label>
             <select name="roleName" class="form-control">
                 @foreach (var role in Model.AvailableRoles)
                 {
@@ -16,26 +16,26 @@
                 }
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Assign Role</button>
+        <button type="submit" class="btn btn-primary">Atribuir Função</button>
     </form>
 </div>
 
-<h3>Assigned Roles</h3>
+<h3>Funções Atribuídas</h3>
 <ul>
     @foreach (var role in Model.AssignedRoles)
     {
         <li>
             @role
-            @if (role != "Admin") 
+            @if (role != "Admin")
             {
                 <form asp-action="RemoveRole" method="post" class="d-inline">
                     <input type="hidden" name="userId" value="@Model.UserId" />
                     <input type="hidden" name="roleName" value="@role" />
-                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Remover</button>
                 </form>
             }
         </li>
     }
 </ul>
 
-<a asp-action="Index" asp-controller="Users" class="btn btn-secondary">Back to Users List</a>
+<a asp-action="Index" asp-controller="Users" class="btn btn-secondary">Voltar à Lista de Utilizadores</a>

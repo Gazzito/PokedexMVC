@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<PokedexMVC.Models.Region>
 
 @{
-    ViewData["Title"] = "Regions";
+    ViewData["Title"] = "Regiões";
 }
 
-<h2>Regions</h2>
+<h2>Regiões</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Created By</th>
-            <th>Created On</th>
-            <th>Actions</th>
+            <th>Nome</th>
+            <th>Criado por</th>
+            <th>Criado em</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -20,16 +20,16 @@
         {
             <tr>
                 <td>@region.Name</td>
-                <td>@region.CreatedByUserId</td> <!-- This will now display the username instead of the GUID -->
+                <td>@region.CreatedByUserId</td> <!-- Isto agora exibirá o nome de utilizador em vez do GUID -->
                 <td>@region.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@region.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@region.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@region.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@region.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Edit" asp-route-id="@region.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@region.Id" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Create New Region</a>
+<a asp-action="Create" class="btn btn-primary">Criar Nova Região</a>

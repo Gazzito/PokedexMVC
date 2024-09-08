@@ -1,6 +1,6 @@
 ﻿@model PokedexMVC.Models.Pack
 
-<h2>Create Pack</h2>
+<h2>Criar Pacote</h2>
 
 <form asp-action="Create" enctype="multipart/form-data" method="post" id="packForm">
     <div class="form-horizontal">
@@ -10,56 +10,56 @@
             <div class="col-md-6">
                 <!-- Name -->
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
+                    <label asp-for="Name" class="control-label">Nome</label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <!-- Price -->
                 <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
+                    <label asp-for="Price" class="control-label">Preço</label>
                     <input asp-for="Price" class="form-control" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
 
                 <!-- Bronze Chance -->
                 <div class="form-group">
-                    <label asp-for="BronzeChance" class="control-label"></label>
+                    <label asp-for="BronzeChance" class="control-label">Chance Bronze</label>
                     <input asp-for="BronzeChance" class="form-control chance-input" />
                     <span asp-validation-for="BronzeChance" class="text-danger"></span>
                 </div>
 
                 <!-- Silver Chance -->
                 <div class="form-group">
-                    <label asp-for="SilverChance" class="control-label"></label>
+                    <label asp-for="SilverChance" class="control-label">Chance Prata</label>
                     <input asp-for="SilverChance" class="form-control chance-input" />
                     <span asp-validation-for="SilverChance" class="text-danger"></span>
                 </div>
 
                 <!-- Gold Chance -->
                 <div class="form-group">
-                    <label asp-for="GoldChance" class="control-label"></label>
+                    <label asp-for="GoldChance" class="control-label">Chance Ouro</label>
                     <input asp-for="GoldChance" class="form-control chance-input" />
                     <span asp-validation-for="GoldChance" class="text-danger"></span>
                 </div>
 
                 <!-- Platinum Chance -->
                 <div class="form-group">
-                    <label asp-for="PlatinumChance" class="control-label"></label>
+                    <label asp-for="PlatinumChance" class="control-label">Chance Platina</label>
                     <input asp-for="PlatinumChance" class="form-control chance-input" />
                     <span asp-validation-for="PlatinumChance" class="text-danger"></span>
                 </div>
 
                 <!-- Diamond Chance -->
                 <div class="form-group">
-                    <label asp-for="DiamondChance" class="control-label"></label>
+                    <label asp-for="DiamondChance" class="control-label">Chance Diamante</label>
                     <input asp-for="DiamondChance" class="form-control chance-input" />
                     <span asp-validation-for="DiamondChance" class="text-danger"></span>
                 </div>
 
                 <!-- Upload New Image -->
                 <div class="form-group">
-                    <label>Upload New Image</label><br />
+                    <label>Carregar Nova Imagem</label><br />
                     <input asp-for="Image" type="file" id="fileUpload" class="form-control" />
                     <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
@@ -74,20 +74,20 @@
             <div class="col-md-6">
                 <!-- Dropdown for adding new Pokémon -->
                 <div class="form-group">
-                    <label>Add Pokémon</label>
+                    <label>Adicionar Pokémon</label>
                     <select id="availablePokemons" class="form-control">
-                        <option value="">Select Pokémon to add</option>
+                        <option value="">Selecionar Pokémon para adicionar</option>
                         @foreach (var pokemon in ViewBag.AvailablePokemons)
                         {
                             <option value="@pokemon.Value">@pokemon.Text</option>
                         }
                     </select>
-                    <button type="button" id="addPokemonBtn" class="btn btn-primary mt-2">Add Pokémon</button>
+                    <button type="button" id="addPokemonBtn" class="btn btn-primary mt-2">Adicionar Pokémon</button>
                 </div>
 
                 <!-- List of Added Pokémon -->
                 <div class="form-group mt-3">
-                    <label>Selected Pokémon</label>
+                    <label>Pokémon Selecionados</label>
                     <ul id="selectedPokemonList" class="list-group">
                         @if (ViewBag.SelectedPokemons != null && ((IEnumerable<dynamic>)ViewBag.SelectedPokemons).Any())
                         {
@@ -96,9 +96,8 @@
                                 <li class="list-group-item" data-pokemon-id="@pokemon.PokemonId">
                                     <span class="">@pokemon.Name</span>
                                     <div class="w-100 d-flex justify-content-end align-items-end">
-                                        <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                                        <button type="button" class="btn btn-danger btn-sm">Remover</button>
                                     </div>
-
                                 </li>
                             }
                         }
@@ -112,7 +111,7 @@
 
         <!-- Save Button -->
         <div class="form-group mt-4">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Criar" class="btn btn-primary" />
         </div>
     </div>
 </form>
@@ -131,7 +130,7 @@
                 $('#selectedPokemonList').append(
                     '<li class="list-group-item" data-pokemon-id="' + selectedPokemonId + '">' +
                     '<span class="pokemon-name">' + selectedPokemonName + '</span>' +
-                    '<button type="button" class="btn btn-danger btn-sm float-right remove-pokemon-btn">Remove</button>' +
+                    '<button type="button" class="btn btn-danger btn-sm float-right remove-pokemon-btn">Remover</button>' +
                     '</li>'
                 );
 
@@ -202,9 +201,8 @@
             // If the total chance is not 100, prevent form submission and show an alert
             if (total !== 100) {
                 event.preventDefault();  // Prevent form submission
-                alert("The total of all chance fields must equal 100. The current total is " + total);
+                alert("O total de todas as probabilidades deve ser 100. O total atual é " + total);
             }
         });
     </script>
 }
-

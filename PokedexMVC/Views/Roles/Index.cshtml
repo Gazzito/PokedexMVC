@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<h2>Roles List</h2>
+<h2>Lista de Funções</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Role Name</th>
-            <th>Actions</th>
+            <th>Nome da Função</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -15,13 +15,13 @@
             <tr>
                 <td>@role.Name</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@role.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@role.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Create New Role</a>
+<a asp-action="Create" class="btn btn-primary">Criar Nova Função</a>

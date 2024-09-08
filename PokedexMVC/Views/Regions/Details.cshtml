@@ -1,31 +1,31 @@
 ﻿@model PokedexMVC.Models.Region
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h2>Region</h2>
+<h2>Região</h2>
 
 <div>
-    <h4>Region</h4>
+    <h4>Região</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            Name
+            Nome
         </dt>
         <dd class="col-sm-10">
             @Model.Name
         </dd>
 
         <dt class="col-sm-2">
-            Created On
+            Criado em
         </dt>
         <dd class="col-sm-10">
             @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")
         </dd>
 
         <dt class="col-sm-2">
-            Created By
+            Criado por
         </dt>
         <dd class="col-sm-10">
             @Model.CreatedByUser?.Email
@@ -34,7 +34,7 @@
         @if (Model.UpdatedOn.HasValue)
         {
             <dt class="col-sm-2">
-                Updated On
+                Atualizado em
             </dt>
             <dd class="col-sm-10">
                 @Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm:ss")
@@ -43,17 +43,17 @@
         else
         {
             <dt class="col-sm-2">
-                Updated On
+                Atualizado em
             </dt>
             <dd class="col-sm-10">
-                <i>Not updated</i>
+                <i>Não atualizado</i>
             </dd>
         }
 
         @if (!string.IsNullOrEmpty(Model.UpdatedByUserId))
         {
             <dt class="col-sm-2">
-                Updated By
+                Atualizado por
             </dt>
             <dd class="col-sm-10">
                 @Model.UpdatedByUser?.Email
@@ -62,16 +62,16 @@
         else
         {
             <dt class="col-sm-2">
-                Updated By
+                Atualizado por
             </dt>
             <dd class="col-sm-10">
-                <i>Not updated</i>
+                <i>Não atualizado</i>
             </dd>
         }
     </dl>
 </div>
 
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
 </p>

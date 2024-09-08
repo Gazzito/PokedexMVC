@@ -1,14 +1,14 @@
 ﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
-<h2>User Details</h2>
+<h2>Detalhes do Utilizador</h2>
 
 <div>
     <dl class="row">
         <dt class="col-sm-2">Email</dt>
         <dd class="col-sm-10">@Model.Email</dd>
-        <dt class="col-sm-2">Username</dt>
+        <dt class="col-sm-2">Nome de Utilizador</dt>
         <dd class="col-sm-10">@Model.UserName</dd>
     </dl>
 </div>
 
-<a asp-action="Index" asp-controller="Users" class="btn btn-secondary">Back to List</a>
+<a asp-action="Index" asp-controller="Users" class="btn btn-secondary">Voltar à Lista</a>

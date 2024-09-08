@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<PokedexMVC.Models.Pack>
 
-<h2>Pack List</h2>
+<h2>Lista de Pacotes</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Total Bought</th>
-            <th>Actions</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Total Comprado</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -19,13 +19,13 @@
                 <td>@pack.Price</td>
                 <td>@pack.TotalBought</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@pack.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@pack.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@pack.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@pack.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Edit" asp-route-id="@pack.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@pack.Id" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Add New Pack</a>
+<a asp-action="Create" class="btn btn-primary">Adicionar Novo Pacote</a>

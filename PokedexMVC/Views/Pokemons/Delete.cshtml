@@ -1,92 +1,92 @@
 ﻿@model PokedexMVC.Models.Pokemon
 
-<h2>Delete Pokémon</h2>
+<h2>Eliminar Pokémon</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem a certeza que quer eliminar este Pokémon?</h3>
 
 <div>
     <h4>Pokémon</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            Name
+            Nome
         </dt>
         <dd class="col-sm-10">
             @Model.Name
         </dd>
 
         <dt class="col-sm-2">
-            Base Attack Points
+            Pontos de Ataque Base
         </dt>
         <dd class="col-sm-10">
             @Model.BaseAttackPoints
         </dd>
 
         <dt class="col-sm-2">
-            Base Health Points
+            Pontos de Vida Base
         </dt>
         <dd class="col-sm-10">
             @Model.BaseHealthPoints
         </dd>
 
         <dt class="col-sm-2">
-            Base Defense Points
+            Pontos de Defesa Base
         </dt>
         <dd class="col-sm-10">
             @Model.BaseDefensePoints
         </dd>
 
         <dt class="col-sm-2">
-            Base Speed Points
+            Pontos de Velocidade Base
         </dt>
         <dd class="col-sm-10">
             @Model.BaseSpeedPoints
         </dd>
 
         <dt class="col-sm-2">
-            Created On
+            Criado em
         </dt>
         <dd class="col-sm-10">
             @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")
         </dd>
 
         <dt class="col-sm-2">
-            Updated On
+            Atualizado em
         </dt>
         <dd class="col-sm-10">
             @Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm:ss")
         </dd>
 
         <dt class="col-sm-2">
-            Image
+            Imagem
         </dt>
         <dd class="col-sm-10">
             @if (Model.Image != null && Model.Image.Length > 0)
             {
-                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Image" class="img-thumbnail" style="max-width: 200px;" />
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Imagem" class="img-thumbnail" style="max-width: 200px;" />
             }
             else
             {
-                <span>No Image Available</span>
+                <span>Sem Imagem Disponível</span>
             }
         </dd>
 
         <dt class="col-sm-2">
-            Region
+            Região
         </dt>
         <dd class="col-sm-10">
             @Model.Region?.Name
         </dd>
 
         <dt class="col-sm-2">
-            Created By User
+            Criado por Utilizador
         </dt>
         <dd class="col-sm-10">
             @Model.CreatedByUser?.Email
         </dd>
 
         <dt class="col-sm-2">
-            Updated By User
+            Atualizado por Utilizador
         </dt>
         <dd class="col-sm-10">
             @Model.UpdatedByUser?.Email
@@ -95,7 +95,7 @@
 
     <form asp-action="DeleteConfirmed">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
     </form>
 </div>

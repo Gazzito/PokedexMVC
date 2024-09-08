@@ -1,23 +1,23 @@
 ﻿@model IEnumerable<PokedexMVC.Models.Pokemon>
 
 @{
-    ViewData["Title"] = "Pokemons";
+    ViewData["Title"] = "Pokémons";
 }
 
-<h2>Pokemons</h2>
+<h2>Pokémons</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Region</th>
-            <th>Base Attack</th>
-            <th>Base Defense</th>
-            <th>Base Health</th>
-            <th>Base Speed</th>
-            <th>Created By</th>
-            <th>Created On</th>
-            <th>Actions</th>
+            <th>Nome</th>
+            <th>Região</th>
+            <th>Ataque Base</th>
+            <th>Defesa Base</th>
+            <th>Vida Base</th>
+            <th>Velocidade Base</th>
+            <th>Criado por</th>
+            <th>Criado em</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -33,13 +33,13 @@
                 <td>@pokemon.CreatedByUser?.Email</td>
                 <td>@pokemon.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@pokemon.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@pokemon.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@pokemon.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@pokemon.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Edit" asp-route-id="@pokemon.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@pokemon.Id" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Create New Pokemon</a>
+<a asp-action="Create" class="btn btn-primary">Criar Novo Pokémon</a>

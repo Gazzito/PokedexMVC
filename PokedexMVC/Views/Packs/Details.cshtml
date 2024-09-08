@@ -1,6 +1,6 @@
 ﻿@model PokedexMVC.Models.Pack
 
-<h2>Pack Details</h2>
+<h2>Detalhes do Pacote</h2>
 
 <div class="form-horizontal">
     <hr />
@@ -9,43 +9,43 @@
         <div class="col-md-6">
             <!-- Name -->
             <div class="form-group">
-                <label class="control-label">Name</label>
+                <label class="control-label">Nome</label>
                 <p class="form-control-static">@Model.Name</p>
             </div>
 
             <!-- Price -->
             <div class="form-group">
-                <label class="control-label">Price</label>
+                <label class="control-label">Preço</label>
                 <p class="form-control-static">@Model.Price</p>
             </div>
 
             <!-- Bronze Chance -->
             <div class="form-group">
-                <label class="control-label">Bronze Chance</label>
+                <label class="control-label">Chance Bronze</label>
                 <p class="form-control-static">@Model.BronzeChance</p>
             </div>
 
             <!-- Silver Chance -->
             <div class="form-group">
-                <label class="control-label">Silver Chance</label>
+                <label class="control-label">Chance Prata</label>
                 <p class="form-control-static">@Model.SilverChance</p>
             </div>
 
             <!-- Gold Chance -->
             <div class="form-group">
-                <label class="control-label">Gold Chance</label>
+                <label class="control-label">Chance Ouro</label>
                 <p class="form-control-static">@Model.GoldChance</p>
             </div>
 
             <!-- Platinum Chance -->
             <div class="form-group">
-                <label class="control-label">Platinum Chance</label>
+                <label class="control-label">Chance Platina</label>
                 <p class="form-control-static">@Model.PlatinumChance</p>
             </div>
 
             <!-- Diamond Chance -->
             <div class="form-group">
-                <label class="control-label">Diamond Chance</label>
+                <label class="control-label">Chance Diamante</label>
                 <p class="form-control-static">@Model.DiamondChance</p>
             </div>
 
@@ -53,11 +53,11 @@
             <div class="form-group mt-4 mw-50">
                 @if (Model.Image != null && Model.Image.Length > 0)
                 {
-                    <img id="previewImage" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Pack Image" class="img-thumbnail" style="max-width: 200px;" />
+                    <img id="previewImage" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Imagem do Pacote" class="img-thumbnail" style="max-width: 200px;" />
                 }
                 else
                 {
-                    <p>No image available</p>
+                    <p>Sem imagem disponível</p>
                 }
             </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="col-md-6">
             <!-- List of Added Pokémon -->
             <div class="form-group">
-                <label>Selected Pokémon</label>
+                <label>Pokémon Selecionados</label>
                 <ul id="selectedPokemonList" class="list-group">
                     @if (ViewBag.SelectedPokemons != null && ((IEnumerable<dynamic>)ViewBag.SelectedPokemons).Any())
                     {
@@ -79,7 +79,7 @@
                     }
                     else
                     {
-                        <p>No Pokémon added</p>
+                        <p>Sem Pokémon adicionados</p>
                     }
                 </ul>
             </div>
@@ -88,7 +88,7 @@
 
     <!-- Buttons for Edit and Back -->
     <p>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
     </p>
 </div>
