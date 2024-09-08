@@ -1,0 +1,91 @@
+﻿@model PokedexMVC.Models.Pack
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Pack</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BronzeChance" class="control-label"></label>
+                <input asp-for="BronzeChance" class="form-control" />
+                <span asp-validation-for="BronzeChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SilverChance" class="control-label"></label>
+                <input asp-for="SilverChance" class="form-control" />
+                <span asp-validation-for="SilverChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoldChance" class="control-label"></label>
+                <input asp-for="GoldChance" class="form-control" />
+                <span asp-validation-for="GoldChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlatinumChance" class="control-label"></label>
+                <input asp-for="PlatinumChance" class="form-control" />
+                <span asp-validation-for="PlatinumChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiamondChance" class="control-label"></label>
+                <input asp-for="DiamondChance" class="form-control" />
+                <span asp-validation-for="DiamondChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalBought" class="control-label"></label>
+                <input asp-for="TotalBought" class="form-control" />
+                <span asp-validation-for="TotalBought" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedOn" class="control-label"></label>
+                <input asp-for="CreatedOn" class="form-control" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedByUserId" class="control-label"></label>
+                <select asp-for="CreatedByUserId" class ="form-control" asp-items="ViewBag.CreatedByUserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedOn" class="control-label"></label>
+                <input asp-for="UpdatedOn" class="form-control" />
+                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedByUserId" class="control-label"></label>
+                <select asp-for="UpdatedByUserId" class ="form-control" asp-items="ViewBag.UpdatedByUserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

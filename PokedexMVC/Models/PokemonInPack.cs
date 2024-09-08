@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
 namespace PokedexMVC.Models
 {
@@ -19,23 +18,13 @@ namespace PokedexMVC.Models
         [Required]
         public DateTime CreatedOn { get; set; }
 
-        [Required]
-        public string CreatedByUserId { get; set; }  // Reference to IdentityUser ID
-
         public DateTime? UpdatedOn { get; set; }
 
-        public string? UpdatedByUserId { get; set; }  // Reference to IdentityUser ID
-
+        // Navigation properties
         [ForeignKey("PackId")]
         public virtual Pack Pack { get; set; }
 
         [ForeignKey("PokemonId")]
         public virtual Pokemon Pokemon { get; set; }
-
-        [ForeignKey("CreatedByUserId")]
-        public virtual IdentityUser CreatedByUser { get; set; }  // Navigation property to IdentityUser
-
-        [ForeignKey("UpdatedByUserId")]
-        public virtual IdentityUser UpdatedByUser { get; set; }  // Navigation property to IdentityUser
     }
 }

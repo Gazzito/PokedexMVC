@@ -16,6 +16,7 @@ namespace PokedexMVC.Models
         public string Name { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")] // Explicitly specifying decimal precision
         public decimal Price { get; set; }
 
         public byte[]? Image { get; set; }
@@ -42,18 +43,20 @@ namespace PokedexMVC.Models
         public DateTime CreatedOn { get; set; }
 
         [Required]
-        public string CreatedByUserId { get; set; }  // Reference to IdentityUser ID
+        public string CreatedByUserId { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public string? UpdatedByUserId { get; set; }  // Reference to IdentityUser ID
+        public string? UpdatedByUserId { get; set; }
 
+        // Navigation properties
         [ForeignKey("CreatedByUserId")]
-        public virtual IdentityUser CreatedByUser { get; set; }  // Navigation property to IdentityUser
+        public virtual IdentityUser CreatedByUser { get; set; }
 
         [ForeignKey("UpdatedByUserId")]
-        public virtual IdentityUser UpdatedByUser { get; set; }  // Navigation property to IdentityUser
+        public virtual IdentityUser UpdatedByUser { get; set; }
 
-        public virtual ICollection<PokemonInPack> PokemonInPacks { get; set; }
+        // Add this collection for the relationship with PokemonInPack
+        public virtual ICollection<PokemonInPack> PokemonInPacks { get; set; } = new List<PokemonInPack>();
     }
 }

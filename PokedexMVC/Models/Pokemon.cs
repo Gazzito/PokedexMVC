@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
-using Microsoft.AspNetCore.Identity; // Import Identity
+using Microsoft.AspNetCore.Identity;
 
 namespace PokedexMVC.Models
 {
@@ -35,21 +34,25 @@ namespace PokedexMVC.Models
         public DateTime CreatedOn { get; set; }
 
         [Required]
-        public string CreatedByUserId { get; set; }  // Reference to IdentityUser ID
+        public string CreatedByUserId { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public string? UpdatedByUserId { get; set; }  // Reference to IdentityUser ID
+        public string? UpdatedByUserId { get; set; }
 
         public byte[]? Image { get; set; }
 
+        // Navigation properties
         [ForeignKey("RegionId")]
         public virtual Region Region { get; set; }
 
         [ForeignKey("CreatedByUserId")]
-        public virtual IdentityUser CreatedByUser { get; set; }  // Navigation property to IdentityUser
+        public virtual IdentityUser CreatedByUser { get; set; }
 
         [ForeignKey("UpdatedByUserId")]
-        public virtual IdentityUser UpdatedByUser { get; set; }  // Navigation property to IdentityUser
+        public virtual IdentityUser UpdatedByUser { get; set; }
+
+        // Add this collection for the relationship with PokemonInPack
+        public virtual ICollection<PokemonInPack> PokemonInPacks { get; set; } = new List<PokemonInPack>();
     }
 }
