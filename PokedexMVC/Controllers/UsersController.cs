@@ -116,15 +116,30 @@ namespace PokedexMVC.Controllers
             {
                 return NotFound();
             }
+
+            // Prevent the logged-in user from deleting their own account
+            if (user.Id == _userManager.GetUserId(User))
+            {
+                ModelState.AddModelError(string.Empty, "You cannot delete your own account.");
+                return RedirectToAction(nameof(Index)); // Redirect back to the index or show an error page
+            }
+
             return View(user); // Pass the IdentityUser to the delete view
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
+                // Prevent the logged-in user from deleting their own account
+                if (user.Id == _userManager.GetUserId(User))
+                {
+                    ModelState.AddModelError(string.Empty, "You cannot delete your own account.");
+                    return RedirectToAction(nameof(Index)); // Redirect back to the index or show an error page
+                }
+
                 var result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
@@ -140,6 +155,7 @@ namespace PokedexMVC.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
 
 
 
