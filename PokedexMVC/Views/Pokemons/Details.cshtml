@@ -1,84 +1,80 @@
 ﻿@model PokedexMVC.Models.Pokemon
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
+<h2>Details for @Model.Name</h2>
 
 <div>
     <h4>Pokemon</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseAttackPoints)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseAttackPoints)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseHealthPoints)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseHealthPoints)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseDefensePoints)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseDefensePoints)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseSpeedPoints)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseSpeedPoints)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Region)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Region.CreatedByUserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByUser.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedByUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedByUser.Id)
-        </dd>
+        <!-- Pokemon Name -->
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <!-- Region -->
+        <dt class="col-sm-2">Region</dt>
+        <dd class="col-sm-10">@Model.Region.Name</dd>
+
+        <!-- Base Stats -->
+        <dt class="col-sm-2">Base Attack</dt>
+        <dd class="col-sm-10">@Model.BaseAttackPoints</dd>
+
+        <dt class="col-sm-2">Base Defense</dt>
+        <dd class="col-sm-10">@Model.BaseDefensePoints</dd>
+
+        <dt class="col-sm-2">Base Health</dt>
+        <dd class="col-sm-10">@Model.BaseHealthPoints</dd>
+
+        <dt class="col-sm-2">Base Speed</dt>
+        <dd class="col-sm-10">@Model.BaseSpeedPoints</dd>
+
+        <!-- Created By & On -->
+        <dt class="col-sm-2">Created On</dt>
+        <dd class="col-sm-10">@Model.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+        <dt class="col-sm-2">Created By</dt>
+        <dd class="col-sm-10">@Model.CreatedByUser?.Email</dd>
+
+        <!-- Updated By & On -->
+        @if (Model.UpdatedOn.HasValue)
+        {
+            <dt class="col-sm-2">Updated On</dt>
+            <dd class="col-sm-10">@Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">Updated On</dt>
+            <dd class="col-sm-10"><i>Not updated</i></dd>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.UpdatedByUserId))
+        {
+            <dt class="col-sm-2">Updated By</dt>
+            <dd class="col-sm-10">@Model.UpdatedByUser?.Email</dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">Updated By</dt>
+            <dd class="col-sm-10"><i>Not updated</i></dd>
+        }
+
+        <!-- Image Preview -->
+        @if (Model.Image != null && Model.Image.Length > 0)
+        {
+            <dt class="col-sm-2">Image</dt>
+            <dd class="col-sm-10">
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Image of @Model.Name" class="img-thumbnail" style="max-width:200px;" />
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">Image</dt>
+            <dd class="col-sm-10"><i>No image available</i></dd>
+        }
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <!-- Buttons for Edit and Back -->
+    <p>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </p>
 </div>

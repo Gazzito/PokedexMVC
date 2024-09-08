@@ -1,176 +1,221 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PokedexMVC.Data;
 using PokedexMVC.Models;
+using System.Security.Claims;
+using System.Drawing;
 
-namespace PokedexMVC.Controllers
+public class PokemonsController : Controller
 {
-    public class PokemonsController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public PokemonsController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public PokemonsController(ApplicationDbContext context)
+    // GET: Pokemons
+    public async Task<IActionResult> Index()
+    {
+        var applicationDbContext = _context.Pokemon.Include(p => p.CreatedByUser).Include(p => p.Region).Include(p => p.UpdatedByUser);
+        return View(await applicationDbContext.ToListAsync());
+    }
+
+    // GET: Pokemons/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: Pokemons
-        public async Task<IActionResult> Index()
+        var pokemon = await _context.Pokemon
+            .Include(p => p.CreatedByUser)
+            .Include(p => p.Region)
+            .Include(p => p.UpdatedByUser)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (pokemon == null)
         {
-            var applicationDbContext = _context.Pokemon.Include(p => p.CreatedByUser).Include(p => p.Region).Include(p => p.UpdatedByUser);
-            return View(await applicationDbContext.ToListAsync());
+            return NotFound();
         }
 
-        // GET: Pokemons/Details/5
-        public async Task<IActionResult> Details(int? id)
+        return View(pokemon);
+    }
+
+    // GET: Pokemons/Create
+    public IActionResult Create()
+    {
+        ViewData["RegionId"] = new SelectList(_context.Set<PokedexMVC.Models.Region>(), "Id", "Name");
+        return View();
+    }
+
+    // POST: Pokemons/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Name,RegionId,BaseAttackPoints,BaseHealthPoints,BaseDefensePoints,BaseSpeedPoints,Image")] Pokemon pokemon, IFormFile image)
+    {
+
+        // Remove validation errors for server-side properties
+        ModelState.Remove(nameof(pokemon.CreatedByUserId));
+        ModelState.Remove(nameof(pokemon.CreatedOn));
+        ModelState.Remove(nameof(pokemon.UpdatedOn));
+        ModelState.Remove(nameof(pokemon.UpdatedByUserId));
+        ModelState.Remove(nameof(pokemon.CreatedByUser));
+        ModelState.Remove(nameof(pokemon.UpdatedByUser));
+        ModelState.Remove(nameof(pokemon.Region));
+        if (ModelState.IsValid)
         {
-            if (id == null)
+            if (image != null && image.Length > 0)
             {
-                return NotFound();
-            }
-
-            var pokemon = await _context.Pokemon
-                .Include(p => p.CreatedByUser)
-                .Include(p => p.Region)
-                .Include(p => p.UpdatedByUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
-
-            return View(pokemon);
-        }
-
-        // GET: Pokemons/Create
-        public IActionResult Create()
-        {
-            ViewData["CreatedByUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["RegionId"] = new SelectList(_context.Set<Region>(), "Id", "CreatedByUserId");
-            ViewData["UpdatedByUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        // POST: Pokemons/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,RegionId,BaseAttackPoints,BaseHealthPoints,BaseDefensePoints,BaseSpeedPoints,CreatedOn,CreatedByUserId,UpdatedOn,UpdatedByUserId,Image")] Pokemon pokemon)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(pokemon);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CreatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.CreatedByUserId);
-            ViewData["RegionId"] = new SelectList(_context.Set<Region>(), "Id", "CreatedByUserId", pokemon.RegionId);
-            ViewData["UpdatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.UpdatedByUserId);
-            return View(pokemon);
-        }
-
-        // GET: Pokemons/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var pokemon = await _context.Pokemon.FindAsync(id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
-            ViewData["CreatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.CreatedByUserId);
-            ViewData["RegionId"] = new SelectList(_context.Set<Region>(), "Id", "CreatedByUserId", pokemon.RegionId);
-            ViewData["UpdatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.UpdatedByUserId);
-            return View(pokemon);
-        }
-
-        // POST: Pokemons/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,RegionId,BaseAttackPoints,BaseHealthPoints,BaseDefensePoints,BaseSpeedPoints,CreatedOn,CreatedByUserId,UpdatedOn,UpdatedByUserId,Image")] Pokemon pokemon)
-        {
-            if (id != pokemon.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                using (var ms = new MemoryStream())
                 {
-                    _context.Update(pokemon);
-                    await _context.SaveChangesAsync();
+                    await image.CopyToAsync(ms);
+                    pokemon.Image = ms.ToArray();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PokemonExists(pokemon.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CreatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.CreatedByUserId);
-            ViewData["RegionId"] = new SelectList(_context.Set<Region>(), "Id", "CreatedByUserId", pokemon.RegionId);
-            ViewData["UpdatedByUserId"] = new SelectList(_context.Users, "Id", "Id", pokemon.UpdatedByUserId);
-            return View(pokemon);
-        }
-
-        // GET: Pokemons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
             }
 
-            var pokemon = await _context.Pokemon
-                .Include(p => p.CreatedByUser)
-                .Include(p => p.Region)
-                .Include(p => p.UpdatedByUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
+            pokemon.CreatedOn = DateTime.Now;
+            pokemon.CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return View(pokemon);
-        }
-
-        // POST: Pokemons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var pokemon = await _context.Pokemon.FindAsync(id);
-            if (pokemon != null)
-            {
-                _context.Pokemon.Remove(pokemon);
-            }
-
+            _context.Add(pokemon);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        // Log validation issues for debugging
+        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+        Console.WriteLine("Validation Errors: " + string.Join(", ", errors));
+        ViewData["RegionId"] = new SelectList(_context.Set<PokedexMVC.Models.Region>(), "Id", "Name", pokemon.RegionId);
+        return View(pokemon);
+    }
 
-        private bool PokemonExists(int id)
+    // GET: Pokemons/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
         {
-            return _context.Pokemon.Any(e => e.Id == id);
+            return NotFound();
         }
+
+        var pokemon = await _context.Pokemon.FindAsync(id);
+        if (pokemon == null)
+        {
+            return NotFound();
+        }
+        ViewData["RegionId"] = new SelectList(_context.Set<PokedexMVC.Models.Region>(), "Id", "Name", pokemon.RegionId);
+        return View(pokemon);
+    }
+
+    // POST: Pokemons/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,RegionId,BaseAttackPoints,BaseHealthPoints,BaseDefensePoints,BaseSpeedPoints,Image")] Pokemon pokemon, IFormFile image)
+    {
+        if (id != pokemon.Id)
+        {
+            return NotFound();
+        }
+
+        // Remove validation errors for server-side properties
+        ModelState.Remove(nameof(pokemon.CreatedByUserId));
+        ModelState.Remove(nameof(pokemon.CreatedOn));
+        ModelState.Remove(nameof(pokemon.UpdatedOn));
+        ModelState.Remove(nameof(pokemon.UpdatedByUserId));
+        ModelState.Remove(nameof(pokemon.Image));
+        ModelState.Remove(nameof(pokemon.Region));
+        ModelState.Remove(nameof(pokemon.CreatedByUser));
+        ModelState.Remove(nameof(pokemon.UpdatedByUser));
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                var existingPokemon = await _context.Pokemon.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+                if (existingPokemon == null)
+                {
+                    return NotFound();
+                }
+
+                // Check if a new image is uploaded; if not, retain the existing image
+                if (image != null && image.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        await image.CopyToAsync(ms);
+                        pokemon.Image = ms.ToArray(); // Save the new image
+                    }
+                }
+                else
+                {
+                    pokemon.Image = existingPokemon.Image; // Retain the existing image
+                }
+
+                pokemon.CreatedOn = existingPokemon.CreatedOn; // Retain the original creation date
+                pokemon.CreatedByUserId = existingPokemon.CreatedByUserId; // Retain the original creator
+                pokemon.UpdatedOn = DateTime.Now;
+                pokemon.UpdatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                _context.Update(pokemon);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PokemonExists(pokemon.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+        Console.WriteLine("Validation Errors: " + string.Join(", ", errors));
+        ViewData["RegionId"] = new SelectList(_context.Set<PokedexMVC.Models.Region>(), "Id", "Name", pokemon.RegionId);
+        return View(pokemon);
+    }
+
+
+    // GET: Pokemons/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var pokemon = await _context.Pokemon
+            .Include(p => p.CreatedByUser)
+            .Include(p => p.Region)
+            .Include(p => p.UpdatedByUser)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (pokemon == null)
+        {
+            return NotFound();
+        }
+
+        return View(pokemon);
+    }
+
+    // POST: Pokemons/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var pokemon = await _context.Pokemon.FindAsync(id);
+        if (pokemon != null)
+        {
+            _context.Pokemon.Remove(pokemon);
+        }
+
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool PokemonExists(int id)
+    {
+        return _context.Pokemon.Any(e => e.Id == id);
     }
 }

@@ -1,33 +1,45 @@
 ﻿@model IEnumerable<PokedexMVC.Models.Pokemon>
 
-<h2>Pokémon List</h2>
+@{
+    ViewData["Title"] = "Pokemons";
+}
+
+<h2>Pokemons</h2>
 
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Region</th>
-            <th>Attack</th>
-            <th>Defense</th>
+            <th>Base Attack</th>
+            <th>Base Defense</th>
+            <th>Base Health</th>
+            <th>Base Speed</th>
+            <th>Created By</th>
+            <th>Created On</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var pokemon in Model)
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Region.Name</td>
-                <td>@item.BaseAttackPoints</td>
-                <td>@item.BaseDefensePoints</td>
+                <td>@pokemon.Name</td>
+                <td>@pokemon.Region?.Name</td>
+                <td>@pokemon.BaseAttackPoints</td>
+                <td>@pokemon.BaseDefensePoints</td>
+                <td>@pokemon.BaseHealthPoints</td>
+                <td>@pokemon.BaseSpeedPoints</td>
+                <td>@pokemon.CreatedByUser?.Email</td>
+                <td>@pokemon.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@pokemon.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@pokemon.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@pokemon.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Create New Pokémon</a>
+<a asp-action="Create" class="btn btn-primary">Create New Pokemon</a>

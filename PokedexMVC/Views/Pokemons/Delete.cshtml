@@ -1,87 +1,101 @@
 ﻿@model PokedexMVC.Models.Pokemon
 
-@{
-    ViewData["Title"] = "Delete";
-}
-
-<h1>Delete</h1>
+<h2>Delete Pokémon</h2>
 
 <h3>Are you sure you want to delete this?</h3>
+
 <div>
-    <h4>Pokemon</h4>
+    <h4>Pokémon</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            Name
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Model.Name
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseAttackPoints)
+
+        <dt class="col-sm-2">
+            Base Attack Points
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseAttackPoints)
+        <dd class="col-sm-10">
+            @Model.BaseAttackPoints
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseHealthPoints)
+
+        <dt class="col-sm-2">
+            Base Health Points
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseHealthPoints)
+        <dd class="col-sm-10">
+            @Model.BaseHealthPoints
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseDefensePoints)
+
+        <dt class="col-sm-2">
+            Base Defense Points
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseDefensePoints)
+        <dd class="col-sm-10">
+            @Model.BaseDefensePoints
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseSpeedPoints)
+
+        <dt class="col-sm-2">
+            Base Speed Points
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseSpeedPoints)
+        <dd class="col-sm-10">
+            @Model.BaseSpeedPoints
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
+
+        <dt class="col-sm-2">
+            Created On
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
+        <dd class="col-sm-10">
+            @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedOn)
+
+        <dt class="col-sm-2">
+            Updated On
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedOn)
+        <dd class="col-sm-10">
+            @Model.UpdatedOn?.ToString("yyyy-MM-dd HH:mm:ss") ?? "Not updated"
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
+
+        <dt class="col-sm-2">
+            Image
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
+        <dd class="col-sm-10">
+            @if (Model.Image != null && Model.Image.Length > 0)
+            {
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" alt="Image" class="img-thumbnail" style="max-width: 200px;" />
+            }
+            else
+            {
+                <span>No Image Available</span>
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Region)
+
+        <dt class="col-sm-2">
+            Region
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Region.CreatedByUserId)
+        <dd class="col-sm-10">
+            @Model.Region?.Name ?? "Unknown Region"
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByUser)
+
+        <dt class="col-sm-2">
+            Created By User
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByUser.Id)
+        <dd class="col-sm-10">
+            @Model.CreatedByUser?.Email ?? "Unknown"
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedByUser)
+
+        <dt class="col-sm-2">
+            Updated By User
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedByUser.Id)
+        <dd class="col-sm-10">
+            @Model.UpdatedByUser?.Email ?? "Not updated"
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="DeleteConfirmed">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </form>
 </div>
